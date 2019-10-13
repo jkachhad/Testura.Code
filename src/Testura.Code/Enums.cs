@@ -176,6 +176,21 @@
         Multiply
     }
 
+    public enum PreprocessorDirective
+    {
+        If,
+        Else,
+        Elif,
+        Endif,
+        Define,
+        Undef,
+        Warning,
+        Error,
+        Line,
+        Region,
+        EndRegion
+    }
+
     internal enum AssertType
     {
         AreEqual,
@@ -186,4 +201,5 @@
         AreSame,
         AreNotSame
     }
+
 }
