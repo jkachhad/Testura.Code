@@ -1,4 +1,6 @@
-﻿namespace Testura.Code.Statements
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Testura.Code.Statements
 {
     /// <summary>
     /// Provides a way to generate different statements.
@@ -12,6 +14,7 @@
             Selection = new SelectionStatement();
             Iteration = new IterationStatement();
             Expression = new ExpressionStatement();
+            PreprocessorDirective = new PreprocessorDirectiveStatement();
         }
 
         /// <summary>
@@ -38,5 +41,10 @@
         /// Gets the generator for expression statements.
         /// </summary>
         public static ExpressionStatement Expression { get; private set; }
+
+        /// <summary>
+        /// Gets the generator for preprocessor statements.
+        /// </summary>
+        public static PreprocessorDirectiveStatement PreprocessorDirective { get; private set; }
     }
 }

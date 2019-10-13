@@ -147,6 +147,12 @@ namespace Testura.Code.Builders
             return (TBuilder)this;
         }
 
+        public TBuilder WithPreprcessorDirectives(StatementSyntax statement)
+        {
+            Members.Add(new PreprocessorDirectiveMember(new []{ statement }));
+            return (TBuilder)this;
+        }
+
         protected CompilationUnitSyntax BuildUsings(CompilationUnitSyntax @base)
         {
             var usingSyntaxes = default(SyntaxList<UsingDirectiveSyntax>);

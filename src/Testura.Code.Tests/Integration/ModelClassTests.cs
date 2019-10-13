@@ -76,48 +76,34 @@ namespace Testura.Code.Tests.Integration
         }
 
         [Test]
-        public void Test_CreateClassWithRegion()
-        {
-            var classBuilder = new ClassBuilder("Cat", "Models");
-            var @class = classBuilder
-                .WithUsings("System")
-                .WithRegions(new RegionBuilder("MyRegion")
-                    .WithProperties(PropertyGenerator.Create(new AutoProperty("Name", typeof(string), PropertyTypes.GetAndSet, new List<Modifiers> { Modifiers.Public })))
-                    .Build())
-                .Build();
-
-            Assert.AreEqual(
-                "usingSystem;namespaceModels{publicclassCat{#region MyRegion \npublicstringName{get;set;}#endregion}}",
-                @class.ToString());
-        }
-
-        [Test]
         public void Test_CreateClassWithRegionWithMultipleMembers()
         {
             var classBuilder = new ClassBuilder("Cat", "Models");
             var @class = classBuilder
                 .WithUsings("System")
-                .WithRegions(new RegionBuilder("MyRegion")
-                    .WithFields(
-                        new Field("_name", typeof(string), new List<Modifiers>() { Modifiers.Private }),
-                        new Field("_age", typeof(int), new List<Modifiers>() { Modifiers.Private }))
-                    .WithProperties(PropertyGenerator.Create(new AutoProperty("Name", typeof(string), PropertyTypes.GetAndSet, new List<Modifiers> { Modifiers.Public })))
-                    .WithConstructor(
-                        ConstructorGenerator.Create(
-                            "Cat",
-                            BodyGenerator.Create(
-                                Statement.Declaration.Assign("Name", ReferenceGenerator.Create(new VariableReference("name"))),
-                                Statement.Declaration.Assign("Age", ReferenceGenerator.Create(new VariableReference("age")))),
-                            new List<Parameter> { new Parameter("name", typeof(string)), new Parameter("age", typeof(int)) },
-                            new List<Modifiers> { Modifiers.Public }))
-                    .Build())
+                .WithPreprcessorDirectives(Statement.PreprocessorDirective.Region("MyRegion"))
+                .WithFields(
+                    new Field("_name", typeof(string), new List<Modifiers>() { Modifiers.Private }),
+                    new Field("_age", typeof(int), new List<Modifiers>() { Modifiers.Private }))
+                .WithProperties(PropertyGenerator.Create(new AutoProperty("Name", typeof(string), PropertyTypes.GetAndSet, new List<Modifiers> { Modifiers.Public })))
+                .WithConstructor(
+                    ConstructorGenerator.Create(
+                        "Cat",
+                        BodyGenerator.Create(
+                            Statement.PreprocessorDirective.Line(230, "hej"),
+                            Statement.Declaration.Assign("Name", ReferenceGenerator.Create(new VariableReference("name"))),
+                            Statement.PreprocessorDirective.Warning("My warning"),
+                            Statement.Declaration.Assign("Age", ReferenceGenerator.Create(new VariableReference("age")))),
+                        new List<Parameter> { new Parameter("name", typeof(string)), new Parameter("age", typeof(int)) },
+                        new List<Modifiers> { Modifiers.Public }))
+                .WithPreprcessorDirectives(Statement.PreprocessorDirective.Endregion())
                 .Build();
+
+            var o = new CodeSaver().SaveCodeAsString(@class);
 
             Assert.AreEqual(
                 "usingSystem;namespaceModels{publicclassCat{#region MyRegion \nprivatestring_name;privateint_age;publicstringName{get;set;}publicCat(stringname,intage){Name=name;Age=age;}#endregion}}",
                 @class.ToString());
-
-            var generatedCode = new CodeSaver().SaveCodeAsString(@class);
         }
     }
 }
