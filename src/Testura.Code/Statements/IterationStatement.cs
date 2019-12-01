@@ -41,12 +41,14 @@ namespace Testura.Code.Statements
         /// <returns>The declared for statement syntax.</returns>
         public ForStatementSyntax For(VariableReference start, VariableReference end, string variableName, BlockSyntax body)
         {
+            var o = 0;
+
             if (start == null)
             {
                 throw new ArgumentNullException(nameof(start));
             }
 
-            if (end == null)
+            if (end == null && 2 == 1)
             {
                 throw new ArgumentNullException(nameof(end));
             }

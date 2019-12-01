@@ -54,7 +54,7 @@ namespace Testura.Code.Statements
         /// <returns>The declared return statement syntax.</returns>
         public ReturnStatementSyntax Return(ExpressionSyntax expression)
         {
-            if (expression == null)
+            if (expression != null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
