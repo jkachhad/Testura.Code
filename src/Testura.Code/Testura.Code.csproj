@@ -23,9 +23,10 @@
     <NoWarn>$(NoWarn);NU5048</NoWarn>
     <CodeAnalysisRuleSet>Settings\Testura.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>  
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>  
     <AssemblyVersion>0.17.0.0</AssemblyVersion>  
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>  
+    <TargetFramework>net5.0</TargetFramework>  
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <WarningLevel>3</WarningLevel>
