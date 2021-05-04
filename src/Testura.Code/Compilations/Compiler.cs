@@ -18,13 +18,14 @@ namespace Testura.Code.Compilations
         private readonly string _runtimeDirectory;
         private readonly string[] _referencedAssemblies;
         private readonly IEnumerable<string> _defaultNamespaces;
+        private readonly LanguageVersion _languageVersion;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Compiler"/> class.
         /// </summary>
         /// <param name="referencedAssemblies">Path to all required external assemblies.</param>
         /// <param name="runtimeDirectory">Path to the .NET framework directory.</param>
-        public Compiler(string[] referencedAssemblies = null, string runtimeDirectory = null)
+        public Compiler(string[] referencedAssemblies = null, string runtimeDirectory = null, LanguageVersion languageVersion = LanguageVersion.CSharp6)
         {
             _referencedAssemblies = referencedAssemblies ?? new string[0];
             _runtimeDirectory = runtimeDirectory ?? @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\";
@@ -38,6 +39,7 @@ namespace Testura.Code.Compilations
                 "System.Text.RegularExpressions",
                 "System.Collections.Generic"
             };
+            _languageVersion = languageVersion;
         }
 
         /// <summary>
@@ -102,7 +104,7 @@ namespace Testura.Code.Compilations
                 {
                     parsedSyntaxTrees[i] = Parse(
                         source[i],
-                        CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.CSharp6));
+                        CSharpParseOptions.Default.WithLanguageVersion(_languageVersion));
                 }
 
                 var defaultCompilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
